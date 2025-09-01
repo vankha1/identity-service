@@ -2,10 +2,13 @@ package com.java.identity_service.controller;
 
 import com.java.identity_service.dto.request.ApiResponse;
 import com.java.identity_service.dto.request.UserCreationRequest;
+import com.java.identity_service.dto.response.UserResponse;
 import com.java.identity_service.entity.User;
 import com.java.identity_service.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +16,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    @Autowired
-    private UserService userService;
+    UserService userService;
 
     @GetMapping
     List<User> getUsers() {
@@ -23,18 +27,18 @@ public class UserController {
     }
 
     @PostMapping
-    User createUser(@RequestBody @Valid UserCreationRequest request) {
+    UserResponse createUser(@RequestBody @Valid UserCreationRequest request) {
         return userService.createUser(request);
     }
 
     @GetMapping("/{userId}")
-    User getUserById(@PathVariable String userId) {
+    UserResponse getUserById(@PathVariable String userId) {
         return userService.getUserById(userId);
     }
 
     @PutMapping("/{userId}")
-    ApiResponse<User> updateUser(@PathVariable String userId, @RequestBody UserCreationRequest request){
-        ApiResponse<User> response = new ApiResponse<User>();
+    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserCreationRequest request){
+        ApiResponse<UserResponse> response = new ApiResponse<UserResponse>();
 
         response.setResult(userService.updateUser(userId, request));
         response.setMessage("User updated successfully.");
