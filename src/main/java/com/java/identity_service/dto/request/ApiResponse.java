@@ -11,13 +11,13 @@ import lombok.experimental.FieldDefaults;
  * @param <T> the type of the result object
  */
 @Data
-// Set two constructors: no-args and all-args
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
+    @Builder.Default
     int code = 200;
     String message;
     T result;
